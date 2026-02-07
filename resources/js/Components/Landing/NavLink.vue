@@ -1,17 +1,16 @@
 <script lang="ts" setup>
 interface Props {
-  link: string
-  context: string
+    link: string;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 </script>
 
 <template>
-  <a
-    :href="link"
-    class="block p-3 font-medium transition duration-300 lg:inline-block text-charcoal hover:text-gray-medium bg-off-white lg:bg-transparent rounded-[10px] w-full lg:w-auto text-left lg:text-center"
-  >
-    {{ context }}
-  </a>
+    <a
+        :href="link"
+        class="text-charcoal hover:text-gray-medium bg-off-white block w-full rounded-[10px] p-3 text-left font-medium transition duration-300 lg:inline-block lg:w-auto lg:bg-transparent lg:text-center"
+    >
+        <slot></slot>
+    </a>
 </template>

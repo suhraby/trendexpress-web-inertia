@@ -1,23 +1,28 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const model = defineModel<string>({ required: true });
+
+const props = defineProps<{
+    error?: string;
+}>();
 
 const input = ref<HTMLInputElement | null>(null);
 
 onMounted(() => {
     if (input.value?.hasAttribute('autofocus')) {
-        input.value?.focus();
+        input.value.focus();
     }
 });
 
 defineExpose({ focus: () => input.value?.focus() });
+
+const inputClass = computed(() => [
+    'block w-full rounded-[10px] border px-3 py-2.5',
+    props.error ? 'border-red-brand' : 'border-gray-light',
+]);
 </script>
 
 <template>
-    <input
-        class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-        v-model="model"
-        ref="input"
-    />
+    <input :class="inputClass" v-model="model" ref="input" v-bind="$attrs" />
 </template>

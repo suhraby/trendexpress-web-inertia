@@ -1,5 +1,5 @@
 <template>
-    <Head title="Home page | TrendExpress" />
+    <Head title="Home page" />
 
     <Navbar />
 

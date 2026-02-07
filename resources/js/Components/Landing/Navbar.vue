@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
+import { ref, Ref } from 'vue';
 
 // import {
 //   DropdownMenu,
@@ -11,12 +12,13 @@ import { Link } from '@inertiajs/vue3';
 // import { useLanguage } from '@/composables/useLanguage'
 // import type { Language } from '@/types/api'
 // import NavLink from './NavLink.vue'
-// import MenuIcon from '../Icons/MenuIcon.vue'
-// import CloseIcon from '../Icons/CloseIcon.vue'
+import CloseIcon from '@/Components/Icons/CloseIcon.vue';
+import MenuIcon from '@/Components/Icons/MenuIcon.vue';
+import NavLink from './NavLink.vue';
 // import ChevronDownIcon from '../Icons/ChevronDownIcon.vue'
 // import { useAuth } from '@/composables/useAuth'
 
-// const isMobileMenuOpen = ref(false)
+const isMobileMenuOpen: Ref<boolean> = ref(false);
 // const { isAuthenticated } = useAuth()
 
 // const { currentLanguage, setLanguage, availableLanguages, t } = useLanguage()
@@ -36,9 +38,9 @@ import { Link } from '@inertiajs/vue3';
 //   }
 // }
 
-// const toggleMobileMenu = () => {
-//   isMobileMenuOpen.value = !isMobileMenuOpen.value
-// }
+const toggleMobileMenu = () => {
+    isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
 </script>
 
 <template>
@@ -59,8 +61,7 @@ import { Link } from '@inertiajs/vue3';
 
                 <!-- Mobile Menu Button -->
                 <div class="block lg:hidden">
-                    <button>mob btn</button>
-                    <!-- <button
+                    <button
                         @click="toggleMobileMenu"
                         class="text-charcoal hover:text-gray-medium flex cursor-pointer items-center p-1.5 transition duration-300"
                     >
@@ -70,43 +71,23 @@ import { Link } from '@inertiajs/vue3';
                         <CloseIcon
                             :class="isMobileMenuOpen ? 'block' : 'hidden'"
                         />
-                    </button> -->
+                    </button>
                 </div>
 
-                <!-- isMobileMenuOpen ? 'flex' : 'hidden', -->
                 <div
                     id="nav-content"
                     :class="[
                         'w-full grow flex-col items-start py-3 lg:visible lg:flex lg:w-auto lg:flex-row lg:items-center lg:pt-0',
+                        isMobileMenuOpen ? 'flex' : 'hidden',
                     ]"
                 >
                     <div
                         class="3xl:space-x-10 flex w-full flex-col items-start space-y-2 lg:w-auto lg:grow lg:flex-row lg:justify-center lg:space-y-0 lg:space-x-1 xl:space-x-8"
                     >
-                        <a
-                            href="#about"
-                            class="text-charcoal hover:text-gray-medium bg-off-white block w-full rounded-[10px] p-3 text-left font-medium transition duration-300 lg:inline-block lg:w-auto lg:bg-transparent lg:text-center"
-                        >
-                            About us
-                        </a>
-                        <a
-                            href="#service"
-                            class="text-charcoal hover:text-gray-medium bg-off-white block w-full rounded-[10px] p-3 text-left font-medium transition duration-300 lg:inline-block lg:w-auto lg:bg-transparent lg:text-center"
-                        >
-                            Service
-                        </a>
-                        <a
-                            href="#contact"
-                            class="text-charcoal hover:text-gray-medium bg-off-white block w-full rounded-[10px] p-3 text-left font-medium transition duration-300 lg:inline-block lg:w-auto lg:bg-transparent lg:text-center"
-                        >
-                            Contact us
-                        </a>
-                        <a
-                            href="#track_my_cargo"
-                            class="text-charcoal hover:text-gray-medium bg-off-white block w-full rounded-[10px] p-3 text-left font-medium transition duration-300 lg:inline-block lg:w-auto lg:bg-transparent lg:text-center"
-                        >
-                            Track my cargo
-                        </a>
+                        <NavLink link="#about">About us</NavLink>
+                        <NavLink link="#service">Service</NavLink>
+                        <NavLink link="#contact">Contact us</NavLink>
+                        <NavLink link="#track_my_cargo">Track my cargo</NavLink>
                     </div>
 
                     <div
@@ -157,22 +138,22 @@ import { Link } from '@inertiajs/vue3';
                                         ? 'text-red-brand'
                                         : '',
                                 ]"
-                                >{{ lang.label }}</a -->
-                            >
+                                >{{ lang.label }}</a> -->
+                            mobile nav lang
                         </div>
 
                         <div class="pt-3 lg:pt-0">
                             <Link
                                 v-if="$page.props.auth.user"
                                 :href="route('dashboard')"
-                                class="bg-charcoal w-full basis-0 rounded-xl px-[38px] py-3 font-semibold text-nowrap text-white transition duration-300 lg:w-auto"
+                                class="bg-charcoal w-full basis-0 rounded-xl px-9.5 py-3 font-semibold text-nowrap text-white transition duration-300 lg:w-auto"
                             >
                                 Dashboard
                             </Link>
                             <template v-else>
                                 <Link
                                     :href="route('login')"
-                                    class="bg-charcoal w-full basis-0 rounded-xl px-[38px] py-3 font-semibold text-nowrap text-white transition duration-300 lg:w-auto"
+                                    class="bg-charcoal w-full basis-0 rounded-xl px-9.5 py-3 font-semibold text-nowrap text-white transition duration-300 lg:w-auto"
                                 >
                                     Log in
                                 </Link>
