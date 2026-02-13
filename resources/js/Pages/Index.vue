@@ -4,7 +4,6 @@
     <Navbar />
 
     <main>
-        <!-- <HeroSection :data="heroSection" /> -->
         <template v-for="(data, key) in sections.data" :key="key">
             <component
                 v-if="key !== 4"
@@ -31,7 +30,7 @@ import HeroSection from '@/Components/Landing/HeroSection.vue';
 import MissionSection from '@/Components/Landing/MissionSection.vue';
 import Navbar from '@/Components/Landing/Navbar.vue';
 import ServiceSection from '@/Components/Landing/ServiceSection.vue';
-import { ApiResponse, ContactInfoData, SectionData } from '@/types/section';
+import { ApiResponse, ContactInfoData, SectionData } from '@/types/data';
 import { Head } from '@inertiajs/vue3';
 
 type SectionKey = keyof typeof sectionMap;

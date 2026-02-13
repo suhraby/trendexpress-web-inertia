@@ -1,3 +1,12 @@
+export interface UserData {
+    identifier: string;
+    name: string;
+    surname: string;
+    email: string;
+    phone_number: string;
+    has_default_password: boolean;
+}
+
 export interface SectionData {
     name: string;
     title?: LocalizedText;

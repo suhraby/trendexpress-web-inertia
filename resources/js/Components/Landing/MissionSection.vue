@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import SectionTitle from '@/Components/Landing/SectionTitle.vue';
-import type { SectionData } from '@/types/section';
+import type { SectionData } from '@/types/data';
 // import { useLanguage } from '@/composables/useLanguage'
 
 // const { tApi } = useLanguage();

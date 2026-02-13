@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 // import { useLanguage } from '@/composables/useLanguage'
-// import type { ContactInfoData, MessageCredentials, SectionData } from '@/types/section'
+// import type { ContactInfoData, MessageCredentials, SectionData } from '@/types/data'
 import SectionTitle from '@/components/Landing/SectionTitle.vue';
-import type { ContactInfoData, SectionData } from '@/types/section';
+import type { ContactInfoData, SectionData } from '@/types/data';
 // import { useMessage } from '@/composables/useMessage'
 // import { toast } from 'vue-sonner'
 

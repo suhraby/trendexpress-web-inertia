@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\CustomVerifyEmail;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -94,5 +95,39 @@ class User extends Authenticatable
             ->orWhere('phone_number', $identifier)
             ->orWhere('identifier', $identifier)
             ->first();
+    }
+
+    public function isTempName(): bool
+    {
+        return $this->name === 'waiting to fill';
+    }
+
+    public function isTempSurname(): bool
+    {
+        return $this->surname === 'waiting to fill';
+    }
+
+    public function isTempEmail(): bool
+    {
+        return str_ends_with($this->email, '@temp.local');
+    }
+
+    public function isTempPhone(): bool
+    {
+        return str_starts_with($this->phone_number, 'temp_');
+    }
+
+    public function needsProfileCompletion(): bool
+    {
+        return $this->has_default_password
+            || $this->isTempEmail()
+            || $this->isTempPhone()
+            || $this->isTempName()
+            || $this->isTempSurname();
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new CustomVerifyEmail());
     }
 }

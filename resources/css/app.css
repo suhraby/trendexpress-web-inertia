@@ -76,7 +76,7 @@
     }
 
     .container-fluid {
-        @apply w-full px-4 md:px-10 lg:px-20 2xl:px-60 max-w-screen lg:max-w-[1920px] mx-auto;
+        @apply w-full px-4 md:px-10 lg:px-20 2xl:px-60 max-w-screen lg:max-w-480 mx-auto;
     }
 
     .container-auth {
@@ -84,7 +84,7 @@
     }
 
     .container-dashboard {
-        @apply w-full px-4 md:px-[42px] mx-auto max-w-screen;
+        @apply w-full px-4 md:px-10.5 mx-auto max-w-screen;
     }
 
     .full-object-center {

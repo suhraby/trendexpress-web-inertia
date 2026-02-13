@@ -3,7 +3,7 @@
 import ArrowRightIcon from '@/Components/Icons/ArrowRightIcon.vue';
 import ArrowUpRightIcon from '@/Components/Icons/ArrowUpRightIcon.vue';
 import PinIcon from '@/Components/Icons/PinIcon.vue';
-import type { SectionData } from '@/types/section';
+import type { SectionData } from '@/types/data';
 
 // const { tApi } = useLanguage()
 

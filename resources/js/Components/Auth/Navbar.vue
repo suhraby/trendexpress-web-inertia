@@ -36,7 +36,7 @@ import GlobeIcon from '@/Components/Icons/GlobeIcon.vue';
             class="container-auth flex flex-col flex-wrap items-center space-y-2 py-6 sm:flex-row sm:justify-between sm:space-y-0"
         >
             <div class="shrink-0">
-                <Link :to="{ name: 'index' }">
+                <Link :href="route('index')">
                     <img
                         src="/assets/images/logo-dark.svg"
                         alt="TrendExpress dark logo"

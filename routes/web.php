@@ -1,15 +1,23 @@
 <?php
 
-use App\Http\Controllers\WebController;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\WebController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileCompleteController;
 
 Route::get('/', [WebController::class, 'index'])->name('index');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'profile.complete', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/complete', [ProfileCompleteController::class, 'edit'])
+        ->name('profile.complete');
+
+    Route::post('/profile/complete', [ProfileCompleteController::class, 'update'])
+        ->name('profile.complete.update');
+});
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
