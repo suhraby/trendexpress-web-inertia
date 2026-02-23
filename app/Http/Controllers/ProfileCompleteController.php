@@ -8,20 +8,20 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\ProfileCompleteRequest;
+use App\Http\Requests\ProfileRequest;
 
 class ProfileCompleteController extends Controller
 {
     public function edit(Request $request): Response
     {
-        $user = new UserResource($request->user());
+        $user = new UserResource($request->user()->fresh());
 
         return Inertia::render('ProfileComplete', [
             'user' => $user,
         ]);
     }
 
-    public function update(ProfileCompleteRequest $request): RedirectResponse
+    public function update(ProfileRequest $request): RedirectResponse
     {
         $user = $request->user();
         $user->fill($request->validated());

@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WebController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileCompleteController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WebController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WebController::class, 'index'])->name('index');
 
@@ -15,7 +16,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/complete', [ProfileCompleteController::class, 'edit'])
         ->name('profile.complete');
 
-    Route::post('/profile/complete', [ProfileCompleteController::class, 'update'])
+    Route::put('/profile/complete', [ProfileCompleteController::class, 'update'])
         ->name('profile.complete.update');
 });
 

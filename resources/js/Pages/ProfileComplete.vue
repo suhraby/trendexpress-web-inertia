@@ -6,21 +6,6 @@
         <div class="pb-5 text-sm md:pb-7 lg:pb-10">
             <form @submit.prevent="handleSubmit">
                 <div class="mb-4">
-                    <InputLabel for="name" value="Your name" required />
-                    <TextInput
-                        id="name"
-                        type="text"
-                        name="name"
-                        placeholder="Enter name"
-                        required
-                        v-model="form.name"
-                        autocomplete="name"
-                        :error="form.errors.name"
-                    />
-                    <InputError :message="form.errors.name" />
-                </div>
-
-                <div class="mb-4">
                     <InputLabel for="surname" value="Your surname" required />
                     <TextInput
                         id="surname"
@@ -34,7 +19,20 @@
                     />
                     <InputError :message="form.errors.surname" />
                 </div>
-
+                <div class="mb-4">
+                    <InputLabel for="name" value="Your name" required />
+                    <TextInput
+                        id="name"
+                        type="text"
+                        name="name"
+                        placeholder="Enter name"
+                        required
+                        v-model="form.name"
+                        autocomplete="name"
+                        :error="form.errors.name"
+                    />
+                    <InputError :message="form.errors.name" />
+                </div>
                 <div class="mb-4">
                     <InputLabel for="email" value="Your email" required />
                     <TextInput
@@ -132,7 +130,7 @@ const form = useForm({
 });
 
 const handleSubmit = () => {
-    form.post(route('profile.complete.update'), {
+    form.put(route('profile.complete.update'), {
         onError: (errors) => {
             console.log(errors);
         },

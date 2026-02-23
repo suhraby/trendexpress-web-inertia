@@ -18,7 +18,7 @@ onMounted(() => {
 defineExpose({ focus: () => input.value?.focus() });
 
 const inputClass = computed(() => [
-    'block w-full rounded-[10px] border px-3 py-2.5 bg-white',
+    'block w-full rounded-[10px] border px-3 py-2.5 bg-white text-gray-medium',
     props.error ? 'border-red-brand' : 'border-gray-light',
 ]);
 </script>

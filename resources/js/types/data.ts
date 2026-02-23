@@ -7,6 +7,37 @@ export interface UserData {
     has_default_password: boolean;
 }
 
+export interface StatusData {
+    id: number;
+    name: LocalizedText;
+    icon: string;
+}
+
+interface CargoStatusData {
+    id: number;
+    name: LocalizedText;
+    status_at: string;
+    note: string;
+}
+
+export interface CargoImageData {
+    id: string;
+    src: string;
+    thumbnail: string;
+}
+
+export interface CargoData {
+    number: string;
+    weight: string;
+    received_address: string;
+    current_status_id: number;
+    current_status: LocalizedText;
+    current_status_icon: string;
+    created_at: string;
+    status_histories: CargoStatusData[];
+    images: CargoImageData[];
+}
+
 export interface SectionData {
     name: string;
     title?: LocalizedText;
