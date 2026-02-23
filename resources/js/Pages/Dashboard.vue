@@ -3,24 +3,21 @@
 
     <div
         class="relative"
-        :class="
-            isMobileMenuOpen || isFilterFormOpen || isProfileFormOpen
-                ? 'h-screen overflow-hidden'
-                : ''
-        "
+        :class="activePanel ? 'h-screen overflow-hidden' : ''"
     >
         <div
             @click="closeAllModal"
             :class="[
                 'bg-charcoal/25 absolute top-0 left-0 z-10 block h-screen w-full',
-                isMobileMenuOpen || isFilterFormOpen || isProfileFormOpen
-                    ? 'block'
-                    : 'hidden',
+                activePanel ? 'block' : 'hidden',
             ]"
         ></div>
 
         <header
-            class="fixed top-0 z-0 w-full text-sm bg-white md:static md:top-auto"
+            :class="[
+                'fixed top-0 w-full bg-white text-sm md:static md:top-auto',
+                activePanel === 'mobileMenu' ? 'z-20' : 'z-10',
+            ]"
         >
             <nav
                 class="flex flex-row flex-wrap items-center justify-between py-3 border-b container-dashboard border-gray-light md:py-6"
@@ -43,12 +40,21 @@
                 <div class="block md:hidden">
                     <button
                         class="text-charcoal hover:text-gray-medium flex cursor-pointer items-center p-1.5 transition duration-300"
+                        @click="togglePanel('mobileMenu')"
                     >
                         <MenuIcon
-                            :class="!isMobileMenuOpen ? 'block' : 'hidden'"
+                            :class="
+                                activePanel !== 'mobileMenu'
+                                    ? 'block'
+                                    : 'hidden'
+                            "
                         />
                         <CloseIcon
-                            :class="isMobileMenuOpen ? 'block' : 'hidden'"
+                            :class="
+                                activePanel === 'mobileMenu'
+                                    ? 'block'
+                                    : 'hidden'
+                            "
                         />
                     </button>
                 </div>
@@ -58,7 +64,7 @@
                     <div>locale</div>
                     <div
                         class="flex flex-row cursor-pointer"
-                        @click="toggleProfileForm"
+                        @click="togglePanel('profile')"
                     >
                         <span>{{
                             $page.props.auth.user.surname +
@@ -75,16 +81,18 @@
             <div
                 :class="[
                     'container-dashboard absolute left-0 z-50 w-full space-y-2 bg-white py-4 md:hidden',
-                    isMobileMenuOpen ? 'block' : 'hidden',
+                    activePanel === 'mobileMenu' ? 'block' : 'hidden',
                 ]"
             >
-                <!-- @click="toggleProfileForm" -->
                 <a
-                    class="text-charcoal bg-off-white block w-full rounded-[10px] px-3 py-3 font-medium lg:w-auto"
-                    >Profile</a
+                    class="text-charcoal bg-off-white flex w-full flex-row justify-between rounded-[10px] px-3 py-3 font-medium lg:w-auto"
+                    @click="togglePanel('profile')"
                 >
+                    <span>Profile</span>
+                    <ChevronRightIcon class="text-gray-medium" />
+                </a>
                 <div class="text-lg font-semibold">Language</div>
-                <div>
+                <div class="space-y-2">
                     <a
                         href="#"
                         class="bg-off-white text-red-brand block w-full rounded-[10px] px-3 py-3 font-medium lg:w-auto"
@@ -112,7 +120,9 @@
                 <div
                     :class="[
                         'fixed bottom-0 left-0 w-full rounded-tl-[20px] rounded-tr-[20px] bg-white p-4 md:static md:bottom-auto md:left-auto md:z-auto md:block md:w-60 md:rounded-none md:p-0',
-                        isFilterFormOpen ? 'z-20 block' : 'z-auto hidden',
+                        activePanel === 'filter'
+                            ? 'z-20 block'
+                            : 'z-auto hidden',
                     ]"
                 >
                     <div class="flex flex-row justify-between mb-5 md:hidden">
@@ -121,7 +131,7 @@
                         </div>
 
                         <button
-                            @click="toggleFilterForm"
+                            @click="togglePanel('filter')"
                             class="text-charcoal hover:text-gray-medium flex cursor-pointer items-center p-1.5 transition duration-300"
                         >
                             <CloseIcon />
@@ -161,13 +171,13 @@
     <div
         :class="[
             'absolute right-0 bottom-0 z-30 min-h-166.75 w-full overflow-y-auto rounded-tl-[20px] rounded-tr-[20px] bg-white p-4 md:top-0 md:bottom-auto md:h-screen md:w-89 md:rounded-none md:p-5 lg:w-md',
-            isProfileFormOpen ? 'block' : 'hidden',
+            activePanel === 'profile' ? 'block' : 'hidden',
         ]"
     >
         <div class="flex flex-row justify-between mb-4 lg:mb-6">
             <div class="text-2xl font-bold lg:text-[1.75rem]">Profile</div>
             <button
-                @click="toggleProfileForm"
+                @click="togglePanel('profile')"
                 class="text-charcoal hover:text-gray-medium flex cursor-pointer items-center p-1.5 transition duration-300"
             >
                 <CloseIcon />
@@ -175,108 +185,19 @@
         </div>
 
         <div class="text-sm">
-            <pre v-show="Object.keys(form.errors).length">{{
-                form.errors
-            }}</pre>
-            <form action="POST" @submit.prevent="handleSubmit">
-                <div class="mb-4">
-                    <InputLabel for="surname" value="Your surname" required />
-                    <TextInput
-                        id="surname"
-                        type="text"
-                        name="surname"
-                        placeholder="Enter surname"
-                        required
-                        v-model="form.surname"
-                        autocomplete="surname"
-                        :error="form.errors.surname"
-                    />
-                    <InputError :message="form.errors.surname" />
-                </div>
-                <div class="mb-4">
-                    <InputLabel for="name" value="Your name" required />
-                    <TextInput
-                        id="name"
-                        type="text"
-                        name="name"
-                        placeholder="Enter name"
-                        required
-                        v-model="form.name"
-                        autocomplete="name"
-                        :error="form.errors.name"
-                    />
-                    <InputError :message="form.errors.name" />
-                </div>
-                <div class="mb-4">
-                    <InputLabel
-                        for="phone_number"
-                        value="Your phone number"
-                        required
-                    />
-                    <TextInput
-                        id="phone_number"
-                        type="text"
-                        name="phone_number"
-                        placeholder="Enter the phone number"
-                        required
-                        v-model="form.phone_number"
-                        autocomplete="phone_number"
-                        :error="form.errors.phone_number"
-                    />
-                    <InputError :message="form.errors.phone_number" />
-                </div>
-
-                <div class="mb-4">
-                    <InputLabel for="email" value="Your email" required />
-                    <TextInput
-                        id="email"
-                        type="text"
-                        name="email"
-                        placeholder="Enter email"
-                        required
-                        v-model="form.email"
-                        autocomplete="email"
-                        :error="form.errors.email"
-                    />
-                    <InputError :message="form.errors.email" />
-                </div>
-
-                <div class="my-5 border-b border-gray-light md:my-6"></div>
-
-                <div class="mb-4">
-                    <InputLabel for="password" value="Password" required />
-                    <TextInput
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        required
-                        v-model="form.password"
-                        autocomplete="current-password"
-                        :error="form.errors.password"
-                    />
-                    <InputError :message="form.errors.password" />
-                </div>
-
-                <div class="mb-8">
-                    <InputLabel
-                        for="password_confirmation"
-                        value="Password confirmation"
-                        required
-                    />
-                    <TextInput
-                        type="password"
-                        id="password_confirmation"
-                        name="password_confirmation"
-                        placeholder="Repeat the password"
-                        required
-                        v-model="form.password_confirmation"
-                    />
-                </div>
-
-                <FormButton type="submit" class="mb-6">Submit</FormButton>
-            </form>
+            <ProfileForm :user="user" @success="closeAllModal" />
         </div>
+    </div>
+
+    <div
+        class="fixed bottom-0 block w-full p-4 bg-white shadow-top-subtle md:hidden"
+    >
+        <button
+            @click="togglePanel('filter')"
+            class="block w-full py-3 text-base font-semibold text-center text-white cursor-pointer bg-red-brand rounded-xl"
+        >
+            Filters
+        </button>
     </div>
 </template>
 
@@ -284,13 +205,10 @@
 // Import Use Ref Props&Emits Computed Method Hooks
 import CargoCard from '@/Components/Auth/CargoCard.vue';
 import FilterForm from '@/Components/Auth/FilterForm.vue';
-import FormButton from '@/Components/Auth/FormButton.vue';
+import ProfileForm from '@/Components/Auth/ProfileForm.vue';
 import ChevronRightIcon from '@/Components/Icons/ChevronRightIcon.vue';
 import CloseIcon from '@/Components/Icons/CloseIcon.vue';
 import MenuIcon from '@/Components/Icons/MenuIcon.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { ApiResponse, CargoData, StatusData, UserData } from '@/types/data';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -310,30 +228,15 @@ const form = useForm({
     password_confirmation: '',
 });
 
-const isMobileMenuOpen = ref(false);
-const isFilterFormOpen = ref(false);
-const isProfileFormOpen = ref(false);
+type Panel = 'mobileMenu' | 'filter' | 'profile' | null;
 
-const toggleFilterForm = () => {};
+const activePanel = ref<Panel>(null);
 
-const toggleProfileForm = () => {
-    isProfileFormOpen.value = !isProfileFormOpen.value;
-    isFilterFormOpen.value = false;
-    isMobileMenuOpen.value = false;
+const togglePanel = (panel: Panel) => {
+    activePanel.value = activePanel.value === panel ? null : panel;
 };
 
-const closeAllModal = (): void => {
-    isFilterFormOpen.value = false;
-    isMobileMenuOpen.value = false;
-    isProfileFormOpen.value = false;
-};
-
-const handleSubmit = () => {
-    form.put(route('profile.complete.update'), {
-        onFinish: () => {
-            closeAllModal();
-            form.reset('password');
-        },
-    });
+const closeAllModal = () => {
+    activePanel.value = null;
 };
 </script>
