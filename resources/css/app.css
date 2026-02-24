@@ -68,19 +68,19 @@
     }
 
     .h3 {
-        @apply font-bold text-xl leading-snug;
+        @apply text-xl font-bold leading-snug;
     }
 
     .h5 {
-        @apply font-medium text-lg;
+        @apply text-lg font-medium;
     }
 
     .container-fluid {
-        @apply w-full px-4 md:px-10 lg:px-20 2xl:px-60 max-w-screen lg:max-w-480 mx-auto;
+        @apply w-full px-4 mx-auto md:px-10 lg:px-20 2xl:px-60 max-w-screen lg:max-w-480;
     }
 
     .container-auth {
-        @apply w-full px-6 md:px-11 mx-auto max-w-screen;
+        @apply w-full px-6 mx-auto md:px-11 max-w-screen;
     }
 
     .container-dashboard {
@@ -94,6 +94,21 @@
 
 html {
     scroll-behavior: smooth;
+}
+
+.right-nav .add-after {
+    position: relative;
+    padding-right: 24px;
+}
+
+.right-nav .add-after:after {
+    content: "|";
+    color: #161616;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0;
 }
 
 @theme inline {

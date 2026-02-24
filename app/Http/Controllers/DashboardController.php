@@ -45,7 +45,7 @@ class DashboardController extends Controller
             $query->orderBy('created_at', 'DESC');
         }
 
-        $cargos = $query->with(['orderedHistories', 'media'])->paginate(10)->toResourceCollection();
+        $cargos = $query->with(['orderedHistories', 'media'])->paginate(10)->withQueryString();
 
         return Inertia::render('Dashboard', [
             'statuses' => $statuses,

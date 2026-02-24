@@ -59,9 +59,20 @@
                     </button>
                 </div>
                 <div
-                    class="items-center hidden space-x-6 text-charcoal right-nav md:flex"
+                    class="items-center hidden space-x-5 font-medium text-charcoal right-nav md:flex"
                 >
-                    <div>locale</div>
+                    <div class="add-after">locale</div>
+                    <div class="add-after">
+                        <Link
+                            class="flex flex-row items-center cursor-pointer"
+                            :href="route('logout')"
+                            method="post"
+                            as="button"
+                        >
+                            <LogoutIcon class="mr-1" />
+                            <span>Log Out</span>
+                        </Link>
+                    </div>
                     <div
                         class="flex flex-row cursor-pointer"
                         @click="togglePanel('profile')"
@@ -112,6 +123,16 @@
                         Russian
                     </a>
                 </div>
+                <div class="my-5 border-b border-gray-light"></div>
+                <Link
+                    class="text-charcoal bg-off-white flex w-full flex-row justify-between rounded-[10px] px-3 py-3 font-medium lg:w-auto"
+                    :href="route('logout')"
+                    method="post"
+                    as="button"
+                >
+                    <span>Log Out</span>
+                    <LogoutIcon class="text-gray-medium" />
+                </Link>
             </div>
         </header>
 
@@ -144,12 +165,15 @@
                 <div
                     class="md:border-gray-light mb-8 w-full md:w-[calc(100%-264px)] md:border-l md:pl-6"
                 >
-                    <div class="space-y-6">
-                        <template v-for="(cargo, key) in cargos.data" :key>
+                    <div
+                        v-if="Object.keys(cargos.data).length"
+                        class="space-y-6"
+                    >
+                        <template v-for="(cargo, key) in cargosList" :key>
                             <div
                                 v-if="
                                     key === 0 ||
-                                    cargos.data[key - 1].current_status.en !==
+                                    cargosList[key - 1].current_status.en !==
                                         cargo.current_status.en
                                 "
                                 :class="[
@@ -162,6 +186,10 @@
 
                             <CargoCard :cargo :statuses :cargoIndex="key" />
                         </template>
+                    </div>
+                    <div v-else class="font-medium text-center">
+                        Sorry, we couldn't find that cargo. Please check your
+                        tracking number or search filters.
                     </div>
                 </div>
             </div>
@@ -208,29 +236,31 @@ import FilterForm from '@/Components/Auth/FilterForm.vue';
 import ProfileForm from '@/Components/Auth/ProfileForm.vue';
 import ChevronRightIcon from '@/Components/Icons/ChevronRightIcon.vue';
 import CloseIcon from '@/Components/Icons/CloseIcon.vue';
+import LogoutIcon from '@/Components/Icons/LogoutIcon.vue';
 import MenuIcon from '@/Components/Icons/MenuIcon.vue';
-import { ApiResponse, CargoData, StatusData, UserData } from '@/types/data';
-import { Head, Link, router, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import {
+    ApiResponse,
+    CargoData,
+    PaginatedResponse,
+    StatusData,
+    UserData,
+} from '@/types/data';
+import { Head, Link, router } from '@inertiajs/vue3';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 
 const props = defineProps<{
     statuses: StatusData[];
-    cargos: ApiResponse<CargoData[]>;
+    cargos: PaginatedResponse<CargoData>;
     user: ApiResponse<UserData>;
 }>();
 
-const form = useForm({
-    name: props.user.data.name,
-    surname: props.user.data.surname,
-    email: props.user.data.email,
-    phone_number: props.user.data.phone_number,
-    password: '',
-    password_confirmation: '',
-});
-
 type Panel = 'mobileMenu' | 'filter' | 'profile' | null;
-
+let scrollTimeout: ReturnType<typeof setTimeout> | null = null;
 const activePanel = ref<Panel>(null);
+const cargosList = ref([...props.cargos.data]);
+const nextPage = ref(props.cargos.links.next);
+const loadingMore = ref(false);
+const isPaginating = ref(false);
 
 const togglePanel = (panel: Panel) => {
     activePanel.value = activePanel.value === panel ? null : panel;
@@ -258,4 +288,65 @@ const handleFilterChange = (filters: {
         },
     );
 };
+
+const loadMore = () => {
+    if (!nextPage.value || loadingMore.value) return;
+
+    loadingMore.value = true;
+    isPaginating.value = true;
+
+    router.get(
+        nextPage.value,
+        {},
+        {
+            preserveState: true,
+            preserveScroll: true,
+            only: ['cargos'],
+            onSuccess: (page: any) => {
+                const newCargos = page.props.cargos;
+                cargosList.value.push(...newCargos.data);
+                nextPage.value = newCargos.links.next;
+                loadingMore.value = false;
+                isPaginating.value = false;
+            },
+            onError: () => {
+                loadingMore.value = false;
+                isPaginating.value = false;
+            },
+        },
+    );
+};
+
+watch(
+    () => props.cargos,
+    (newCargos) => {
+        if (isPaginating.value) return; // skip reset during pagination
+        cargosList.value = [...newCargos.data];
+        nextPage.value = newCargos.links.next;
+    },
+);
+
+const handleScroll = () => {
+    if (scrollTimeout) return;
+
+    scrollTimeout = setTimeout(() => {
+        const scrollPosition = window.innerHeight + window.scrollY;
+        const threshold = document.body.offsetHeight - 300;
+
+        if (scrollPosition >= threshold) {
+            loadMore();
+        }
+
+        scrollTimeout = null;
+    }, 150);
+};
+
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+    if (scrollTimeout) clearTimeout(scrollTimeout);
+});
 </script>
