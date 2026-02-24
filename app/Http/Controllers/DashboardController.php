@@ -18,9 +18,16 @@ class DashboardController extends Controller
 
         $query = Cargo::where('user_id', $user->id);
 
-        if ($request->has('status_ids') && is_array($request->status_ids)) {
-            $query->whereHas('statusHistories', function ($q) use ($request) {
-                $q->whereIn('status_id', $request->status_ids);
+        if ($request->has('statusIds') && is_array($request->statusIds)) {
+            $statusIds = $request->statusIds;
+
+            $query->whereHas('statuses', function ($q) use ($statusIds) {
+                $q->whereIn('status_id', $statusIds)
+                    ->whereRaw('cargo_status_history.status_at = (
+                        SELECT MAX(csh.status_at)
+                        FROM cargo_status_history csh
+                        WHERE csh.cargo_id = cargo_status_history.cargo_id
+                    )');
             });
         }
 

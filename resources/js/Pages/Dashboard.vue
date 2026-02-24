@@ -138,7 +138,7 @@
                         </button>
                     </div>
 
-                    <FilterForm :statuses />
+                    <FilterForm :statuses @filter-change="handleFilterChange" />
                 </div>
 
                 <div
@@ -210,7 +210,7 @@ import ChevronRightIcon from '@/Components/Icons/ChevronRightIcon.vue';
 import CloseIcon from '@/Components/Icons/CloseIcon.vue';
 import MenuIcon from '@/Components/Icons/MenuIcon.vue';
 import { ApiResponse, CargoData, StatusData, UserData } from '@/types/data';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const props = defineProps<{
@@ -238,5 +238,24 @@ const togglePanel = (panel: Panel) => {
 
 const closeAllModal = () => {
     activePanel.value = null;
+};
+
+const handleFilterChange = (filters: {
+    statusIds: number[];
+    sortOrder: 'asc' | 'desc';
+    search: string;
+}) => {
+    router.get(
+        route('dashboard'),
+        {
+            statusIds: filters.statusIds,
+            sort: filters.sortOrder,
+            search: filters.search,
+        },
+        {
+            preserveState: true,
+            replace: true,
+        },
+    );
 };
 </script>

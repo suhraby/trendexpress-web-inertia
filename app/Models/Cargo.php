@@ -51,6 +51,19 @@ class Cargo extends Model implements HasMedia
             ->orderBy('status_at');
     }
 
+    public function latestStatus()
+    {
+        return $this->belongsToMany(
+            Status::class,
+            'cargo_status_history',
+            'cargo_id',
+            'status_id'
+        )
+            ->withPivot(['status_at', 'note'])
+            ->orderByPivot('status_at', 'desc')
+            ->limit(1);
+    }
+
     public function latestStatusHistory(): HasMany
     {
         return $this->statusHistories()
