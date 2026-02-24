@@ -317,15 +317,6 @@ const loadMore = () => {
     );
 };
 
-watch(
-    () => props.cargos,
-    (newCargos) => {
-        if (isPaginating.value) return; // skip reset during pagination
-        cargosList.value = [...newCargos.data];
-        nextPage.value = newCargos.links.next;
-    },
-);
-
 const handleScroll = () => {
     if (scrollTimeout) return;
 
@@ -340,6 +331,15 @@ const handleScroll = () => {
         scrollTimeout = null;
     }, 150);
 };
+
+watch(
+    () => props.cargos,
+    (newCargos) => {
+        if (isPaginating.value) return; // skip reset during pagination
+        cargosList.value = [...newCargos.data];
+        nextPage.value = newCargos.links.next;
+    },
+);
 
 onMounted(() => {
     window.addEventListener('scroll', handleScroll);
