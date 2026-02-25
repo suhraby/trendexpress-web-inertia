@@ -19,6 +19,8 @@
         </template>
     </main>
 
+    <Toaster position="bottom-right" richColors />
+
     <Footer />
 </template>
 
@@ -31,9 +33,13 @@ import MissionSection from '@/Components/Landing/MissionSection.vue';
 import Navbar from '@/Components/Landing/Navbar.vue';
 import ServiceSection from '@/Components/Landing/ServiceSection.vue';
 import { ApiResponse, ContactInfoData, SectionData } from '@/types/data';
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
+import { watch } from 'vue';
+import { Toaster, toast } from 'vue-sonner';
 
 type SectionKey = keyof typeof sectionMap;
+
+const page = usePage();
 
 const sectionMap = {
     0: HeroSection,
@@ -48,4 +54,12 @@ const props = defineProps<{
     sections: ApiResponse<SectionData[]>;
     contacts: ApiResponse<ContactInfoData[]>;
 }>();
+
+watch(
+    () => page.props.flash,
+    (flash) => {
+        if (flash?.success) toast.success(flash.success);
+        if (flash?.error) toast.error(flash.error);
+    },
+);
 </script>

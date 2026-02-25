@@ -1,19 +1,3 @@
-<script lang="ts" setup>
-import SectionTitle from '@/Components/Landing/SectionTitle.vue';
-import { useLocale } from '@/composables/useLocale';
-import type { ContactInfoData, SectionData } from '@/types/data';
-// import { toast } from 'vue-sonner'
-
-const { lang } = useLocale();
-
-interface Props {
-    data: SectionData;
-    contactData: ContactInfoData[];
-}
-
-defineProps<Props>();
-</script>
-
 <template>
     <div id="contact" class="py-10 container-fluid md:py-20">
         <div
@@ -92,68 +76,78 @@ defineProps<Props>();
                     v-html="data.description?.[lang]"
                 ></h1>
 
-                <!-- <div v-if="error" class="error-message">{{ error }}</div> -->
-
-                <!-- @submit.prevent="handleSubmit" -->
-                <form>
+                <form @submit.prevent="onSubmit">
                     <div class="grid grid-cols-2 gap-4 mb-4">
                         <div>
-                            <!-- v-model="form.name" :disabled="loading" -->
-                            <input
-                                type="text"
-                                name="name"
-                                class="w-full p-3 font-medium bg-off-white text-gray-medium rounded-xl"
-                                placeholder="Name"
-                                required
-                            />
-                        </div>
-
-                        <div>
-                            <input
+                            <InputField
                                 type="text"
                                 name="surname"
-                                class="w-full p-3 font-medium bg-off-white text-gray-medium rounded-xl"
-                                placeholder="Surname"
+                                v-model="form.surname"
+                                :error="form.errors.surname"
+                                :placeholder="$t('Surname')"
                                 required
                             />
+                            <InputError :message="form.errors.surname" />
                         </div>
 
                         <div>
-                            <input
+                            <InputField
+                                type="text"
+                                name="name"
+                                v-model="form.name"
+                                :error="form.errors.name"
+                                :placeholder="$t('Name')"
+                                required
+                            />
+                            <InputError :message="form.errors.name" />
+                        </div>
+
+                        <div>
+                            <InputField
                                 type="email"
                                 name="email"
-                                class="w-full p-3 font-medium bg-off-white text-gray-medium rounded-xl"
-                                placeholder="Email"
+                                v-model="form.email"
+                                :error="form.errors.email"
+                                :placeholder="$t('Email')"
                                 required
                             />
+                            <InputError :message="form.errors.email" />
                         </div>
 
                         <div>
-                            <input
+                            <InputField
                                 type="tel"
                                 name="phone_number"
-                                class="w-full p-3 font-medium bg-off-white text-gray-medium rounded-xl"
-                                placeholder="Phone number"
+                                v-model="form.phone_number"
+                                :error="form.errors.phone_number"
+                                :placeholder="$t('Phone number')"
                                 required
                             />
+                            <InputError :message="form.errors.phone_number" />
                         </div>
 
                         <div class="col-span-2">
-                            <textarea
+                            <InputField
                                 name="body"
-                                class="bg-off-white text-gray-medium min-h-33.5 w-full resize-none rounded-xl p-3 font-medium"
-                                placeholder="Your message"
-                            ></textarea>
+                                v-model="form.body"
+                                :error="form.errors.body"
+                                :multiline="true"
+                                :placeholder="$t('Your message')"
+                            />
+                            <InputError :message="form.errors.body" />
                         </div>
                     </div>
 
-                    <!-- :disabled="loading" -->
                     <button
                         type="submit"
                         class="px-6 py-3 text-sm text-white cursor-pointer bg-red-brand rounded-xl xl:text-base"
                     >
                         <span class="inline-block font-semibold">
-                            Send message
+                            {{
+                                form.processing
+                                    ? $t('Saving...')
+                                    : $t('Send message')
+                            }}
                         </span>
                         <span class="inline-block ml-4 align-middle">
                             <svg
@@ -177,3 +171,38 @@ defineProps<Props>();
         </div>
     </div>
 </template>
+
+<script lang="ts" setup>
+import SectionTitle from '@/Components/Landing/SectionTitle.vue';
+import { useLocale } from '@/composables/useLocale';
+import type { ContactInfoData, SectionData } from '@/types/data';
+import { useForm } from '@inertiajs/vue3';
+import InputError from '../InputError.vue';
+import InputField from '../InputField.vue';
+
+const { lang } = useLocale();
+
+const form = useForm({
+    name: '',
+    surname: '',
+    email: '',
+    phone_number: '',
+    body: '',
+});
+
+interface Props {
+    data: SectionData;
+    contactData: ContactInfoData[];
+}
+
+defineProps<Props>();
+
+const onSubmit = () => {
+    form.post(route('message'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset();
+        },
+    });
+};
+</script>

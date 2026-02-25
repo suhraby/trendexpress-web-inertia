@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WebController::class, 'index'])->name('index');
+Route::post('/messages', [WebController::class, 'storeMessage'])->name('message');
 
 Route::middleware(['auth', 'profile.complete', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

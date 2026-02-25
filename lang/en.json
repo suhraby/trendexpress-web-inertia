@@ -300,5 +300,10 @@
     "Current status": "Current status",
     "See all images": "See all images",
     "No cargos in the result": "No cargos in the result",
-    "There are currently no shipments with this status. Try adjusting your filters or check other cargo stages.": "There are currently no shipments with this status. Try adjusting your filters or check other cargo stages."
+    "There are currently no shipments with this status. Try adjusting your filters or check other cargo stages.": "There are currently no shipments with this status. Try adjusting your filters or check other cargo stages.",
+    "Send message": "Send message",
+    "Your message": "Your message",
+    "Phone number": "Phone number",
+    "Surname": "Surname",
+    "Your message has been sent.": "Your message has been sent."
 }

@@ -35,6 +35,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'locale' => session('locale', config('app.locale')),
+            'flash'   => [
+                'success' => session('success'),
+                'error'   => session('error'),
+            ],
         ];
     }
 }

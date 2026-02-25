@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
-use App\Models\Section;
+use App\Http\Resources\ContactInfoResource;
+use App\Http\Resources\SectionResource;
 use App\Models\ContactInfo;
+use App\Models\Message;
+use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Resources\SectionResource;
-use App\Http\Resources\ContactInfoResource;
+use Inertia\Inertia;
 
 class WebController extends Controller
 {
@@ -25,5 +26,24 @@ class WebController extends Controller
             // 'laravelVersion' => Application::VERSION,
             // 'phpVersion' => PHP_VERSION,
         ]);
+    }
+
+    public function storeMessage(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required',
+            'surname' => 'required',
+            'email' => 'required|email',
+            'phone_number' => 'required',
+            'body' => 'required',
+        ]);
+
+        $data['subject'] = 'Message from website';
+        $data['ip'] = $request->ip();
+        $data['user_agent'] = $request->userAgent();
+
+        Message::create($request->all());
+
+        return back()->with('success', __('Your message has been sent.'));
     }
 }

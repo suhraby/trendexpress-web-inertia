@@ -58,7 +58,7 @@
                         <span class="ms-2">{{ $t('Remember me') }}</span>
                     </label>
 
-                    <a href="#" class="hover:text-red-brand">
+                    <a href="/#contact" class="hover:text-red-brand">
                         {{ $t('I forgot my password') }}
                     </a>
                 </div>
