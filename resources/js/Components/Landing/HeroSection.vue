@@ -1,19 +1,3 @@
-<script lang="ts" setup>
-import ArrowRightIcon from '@/Components/Icons/ArrowRightIcon.vue';
-import ArrowUpRightIcon from '@/Components/Icons/ArrowUpRightIcon.vue';
-import PinIcon from '@/Components/Icons/PinIcon.vue';
-import { useLocale } from '@/composables/useLocale';
-import type { SectionData } from '@/types/data';
-
-const { lang } = useLocale();
-
-interface Props {
-    data: SectionData | undefined;
-}
-
-defineProps<Props>();
-</script>
-
 <template if-show="data">
     <div
         id="hero"
@@ -75,7 +59,11 @@ defineProps<Props>();
                     {{ data?.search_label?.[lang] }}
                 </h3>
 
-                <form id="search-form" action="" class="relative">
+                <form
+                    id="search-form"
+                    class="relative"
+                    @submit.prevent="onSubmit"
+                >
                     <span class="text-red-brand absolute top-3.25 left-3">
                         <PinIcon />
                     </span>
@@ -83,9 +71,12 @@ defineProps<Props>();
                         type="text"
                         class="w-full py-3 pl-10 text-sm transition-all duration-150 bg-white placeholder-gray-medium focus-visible:outline-red-brand rounded-xl pr-28 2xl:text-base"
                         :placeholder="data?.search_placeholder?.[lang]"
+                        v-model="form.search"
+                        @keydown.enter="onSubmit"
                     />
                     <button
                         class="absolute flex items-center px-4 py-2 space-x-1 text-sm font-medium text-white rounded-lg bg-red-brand top-1 right-1 xl:text-base"
+                        @click="onSubmit"
                     >
                         <span>{{ data?.search_button_text?.[lang] }}</span>
                         <span>
@@ -97,3 +88,34 @@ defineProps<Props>();
         </div>
     </div>
 </template>
+
+<script lang="ts" setup>
+import ArrowRightIcon from '@/Components/Icons/ArrowRightIcon.vue';
+import ArrowUpRightIcon from '@/Components/Icons/ArrowUpRightIcon.vue';
+import PinIcon from '@/Components/Icons/PinIcon.vue';
+import { useLocale } from '@/composables/useLocale';
+import type { SectionData } from '@/types/data';
+import { router, useForm } from '@inertiajs/vue3';
+
+const { lang } = useLocale();
+const form = useForm({
+    search: '',
+});
+
+interface Props {
+    data: SectionData | undefined;
+}
+
+defineProps<Props>();
+
+const onSubmit = () => {
+    router.get(
+        route('dashboard'),
+        { search: form.search },
+        {
+            preserveState: true,
+            replace: true,
+        },
+    );
+};
+</script>

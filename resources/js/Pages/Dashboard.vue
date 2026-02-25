@@ -143,7 +143,11 @@
                         </button>
                     </div>
 
-                    <FilterForm :statuses @filter-change="handleFilterChange" />
+                    <FilterForm
+                        :initial-filters="props.filters"
+                        :statuses
+                        @filter-change="handleFilterChange"
+                    />
                 </div>
 
                 <div
@@ -240,6 +244,11 @@ const props = defineProps<{
     statuses: StatusData[];
     cargos: PaginatedResponse<CargoData>;
     user: ApiResponse<UserData>;
+    filters: {
+        search: string;
+        sort: 'asc' | 'desc';
+        statusIds: number[];
+    };
 }>();
 
 type Panel = 'mobileMenu' | 'filter' | 'profile' | null;

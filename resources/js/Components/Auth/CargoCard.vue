@@ -38,13 +38,12 @@
                     {{ $t('Current status') }}:
                 </span>
                 <span
-                    class="inline px-2 py-1 space-x-1 font-medium align-middle rounded-lg font-sm bg-mint-green text-forest-green text-nowrap"
+                    class="inline-flex flex-row px-2 py-1 space-x-1 font-medium align-middle rounded-lg font-sm bg-mint-green text-forest-green text-nowrap"
                 >
-                    <CheckIcon class="inline align-text-bottom" />
-                    <!-- <span
+                    <span
                         v-html="cargo.current_status_icon"
                         class="inline align-text-bottom"
-                    ></span> -->
+                    ></span>
                     <span>{{ cargo.current_status[lang] }}</span>
                 </span>
             </div>
@@ -136,7 +135,6 @@
 </template>
 
 <script lang="ts" setup>
-import CheckIcon from '@/Components/Icons/CheckIcon.vue';
 import { useLocale } from '@/composables/useLocale';
 import { CargoData, StatusData } from '@/types/data';
 import { computed } from 'vue';

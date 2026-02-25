@@ -104,19 +104,26 @@ import { Label } from '@/Components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
 import { useLocale } from '@/composables/useLocale';
 import { StatusData } from '@/types/data';
+import { usePage } from '@inertiajs/vue3';
 import { computed, nextTick, ref, watch } from 'vue';
 
-const selectedStatusIds = ref<number[]>([]);
-const isAllSelected = ref<boolean>(true);
-const sortOrder = ref<'asc' | 'desc'>('desc');
-const searchQuery = ref<string>('');
-let searchTimeout: ReturnType<typeof setTimeout> | null = null;
-
+const page = usePage();
 const { lang } = useLocale();
 
 const props = defineProps<{
     statuses: StatusData[];
+    initialFilters?: {
+        search: string;
+        sort: 'asc' | 'desc';
+        statusIds: number[];
+    };
 }>();
+
+const isAllSelected = ref<boolean>(true);
+const searchQuery = ref<string>(props.initialFilters?.search ?? '');
+const sortOrder = ref<'asc' | 'desc'>(props.initialFilters?.sort ?? 'desc');
+const selectedStatusIds = ref<number[]>(props.initialFilters?.statusIds ?? []);
+let searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const emit = defineEmits<{
     filterChange: [

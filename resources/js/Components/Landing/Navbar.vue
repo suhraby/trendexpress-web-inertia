@@ -43,7 +43,7 @@
                         <NavLink link="#contact">{{
                             $t('Contact us')
                         }}</NavLink>
-                        <NavLink link="#track_my_cargo">{{
+                        <NavLink :link="route('dashboard')">{{
                             $t('Track my cargo')
                         }}</NavLink>
                     </div>

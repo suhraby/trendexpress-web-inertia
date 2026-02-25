@@ -51,6 +51,11 @@ class DashboardController extends Controller
             'statuses' => $statuses,
             'cargos' => CargoResource::collection($cargos),
             'user' => new UserResource($user),
+            'filters'  => [
+                'search'    => $request->get('search', ''),
+                'sort'      => $sort,
+                'statusIds' => $request->get('statusIds', []),
+            ],
         ]);
     }
 }
