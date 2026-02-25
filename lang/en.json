@@ -298,5 +298,7 @@
     "Created date": "Created date",
     "Received address": "Received address",
     "Current status": "Current status",
-    "See all images": "See all images"
+    "See all images": "See all images",
+    "No cargos in the result": "No cargos in the result",
+    "There are currently no shipments with this status. Try adjusting your filters or check other cargo stages.": "There are currently no shipments with this status. Try adjusting your filters or check other cargo stages."
 }

@@ -298,5 +298,7 @@
     "Created date": "Дата создания",
     "Received address": "Адрес получателя",
     "Current status": "Текущий статус",
-    "See all images": "Посмотреть все изображения"
+    "See all images": "Посмотреть все изображения",
+    "No cargos in the result": "Нет грузов в результате",
+    "There are currently no shipments with this status. Try adjusting your filters or check other cargo stages.": "В настоящее время нет отправлений с таким статусом. Попробуйте изменить фильтры или проверить другие этапы груза."
 }

@@ -175,9 +175,27 @@
                             <CargoCard :cargo :statuses :cargoIndex="key" />
                         </template>
                     </div>
-                    <div v-else class="font-medium text-center">
-                        Sorry, we couldn't find that cargo. Please check your
-                        tracking number or search filters.
+                    <div
+                        v-else
+                        class="flex h-[calc(100vh-153px)] flex-col items-center justify-center text-center"
+                    >
+                        <PackageIcon class="mb-6" />
+                        <div class="max-w-98">
+                            <div
+                                class="mb-2 text-base font-bold md:text-lg lg:text-xl"
+                            >
+                                {{ $t('No cargos in the result') }}
+                            </div>
+                            <div
+                                class="text-xs font-medium md:text-sm lg:text-base"
+                            >
+                                {{
+                                    $t(
+                                        'There are currently no shipments with this status. Try adjusting your filters or check other cargo stages.',
+                                    )
+                                }}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -226,6 +244,7 @@ import ChevronRightIcon from '@/Components/Icons/ChevronRightIcon.vue';
 import CloseIcon from '@/Components/Icons/CloseIcon.vue';
 import LogoutIcon from '@/Components/Icons/LogoutIcon.vue';
 import MenuIcon from '@/Components/Icons/MenuIcon.vue';
+import PackageIcon from '@/Components/Icons/PackageIcon.vue';
 import SwitchLocale from '@/Components/SwitchLocale.vue';
 import { useLocale } from '@/composables/useLocale';
 import {

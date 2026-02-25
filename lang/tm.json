@@ -298,5 +298,7 @@
     "Created date": "Döredilen senesi",
     "Received address": "Alyjynyň salgysy",
     "Current status": "Häzirki ýagdaýy",
-    "See all images": "Ähli suratlary gör"
+    "See all images": "Ähli suratlary gör",
+    "No cargos in the result": "Hiç hili ýük tapylmady",
+    "There are currently no shipments with this status. Try adjusting your filters or check other cargo stages.": "Häzirki wagtda bu ýagdaýda ýük ýok. Süzgüçleri üýtgedip görüň ýa-da ýüküň beýleki etaplaryny barlaň."
 }
