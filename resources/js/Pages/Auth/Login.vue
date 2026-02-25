@@ -1,21 +1,23 @@
 <template>
     <AuthenticationLayout
-        title="Log in"
-        header="Login or create account to track your cargos"
+        :title="$t('Log in')"
+        :header="$t('Login or create account to track your cargos')"
     >
         <div class="pb-5 text-sm md:pb-7 lg:pb-10">
             <form @submit.prevent="handleSubmit">
                 <div class="mb-4">
                     <InputLabel
                         for="identifier"
-                        value="ID, email or phone number"
+                        :value="$t('ID, email or phone number')"
                         required
                     />
                     <TextInput
                         id="identifier"
                         type="text"
                         name="identifier"
-                        placeholder="Enter your ID, email or phone number"
+                        :placeholder="
+                            $t('Enter your ID, email or phone number')
+                        "
                         required
                         v-model="form.identifier"
                         autocomplete="identifier"
@@ -23,12 +25,16 @@
                 </div>
 
                 <div class="mb-4">
-                    <InputLabel for="password" value="Password" required />
+                    <InputLabel
+                        for="password"
+                        :value="$t('Password')"
+                        required
+                    />
                     <TextInput
                         type="password"
                         id="password"
                         name="password"
-                        placeholder="Enter your password"
+                        :placeholder="$t('Enter your password')"
                         required
                         v-model="form.password"
                         autocomplete="current-password"
@@ -42,24 +48,26 @@
                 </div>
 
                 <div
-                    class="text-medium text-gray-medium mb-8 flex justify-between text-center"
+                    class="flex justify-between mb-8 text-center text-medium text-gray-medium"
                 >
                     <label class="flex items-center">
                         <Checkbox
                             name="remember"
                             v-model:checked="form.remember"
                         />
-                        <span class="ms-2">Remember me</span>
+                        <span class="ms-2">{{ $t('Remember me') }}</span>
                     </label>
 
-                    <a href="#" class="hover:text-red-brand"
-                        >I forgot my password</a
-                    >
+                    <a href="#" class="hover:text-red-brand">
+                        {{ $t('I forgot my password') }}
+                    </a>
                 </div>
 
-                <FormButton type="submit" class="mb-8">Log in</FormButton>
+                <FormButton type="submit" class="mb-8">
+                    {{ $t('Log In') }}
+                </FormButton>
 
-                <ContactLink question="Don't have an account?" />
+                <ContactLink :question="$t('Don\'t have an account?')" />
             </form>
         </div>
     </AuthenticationLayout>

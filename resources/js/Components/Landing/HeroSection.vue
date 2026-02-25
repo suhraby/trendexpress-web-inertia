@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-// import { useLanguage } from '@/composables/useLanguage'
 import ArrowRightIcon from '@/Components/Icons/ArrowRightIcon.vue';
 import ArrowUpRightIcon from '@/Components/Icons/ArrowUpRightIcon.vue';
 import PinIcon from '@/Components/Icons/PinIcon.vue';
+import { useLocale } from '@/composables/useLocale';
 import type { SectionData } from '@/types/data';
 
-// const { tApi } = useLanguage()
+const { lang } = useLocale();
 
 interface Props {
     data: SectionData | undefined;
@@ -14,7 +14,7 @@ interface Props {
 defineProps<Props>();
 </script>
 
-<template>
+<template if-show="data">
     <div
         id="hero"
         class="2x:py-[154px] relative pt-15 md:pt-0 lg:pt-33.5 lg:pb-20"
@@ -25,9 +25,9 @@ defineProps<Props>();
         >
             <img
                 :src="data?.image"
-                :alt="data?.title?.en"
+                :alt="data?.title?.[lang]"
                 loading="lazy"
-                class="h-full w-full object-cover object-bottom-left"
+                class="object-cover w-full h-full object-bottom-left"
             />
         </div>
 
@@ -35,44 +35,44 @@ defineProps<Props>();
             <div
                 class="bg-off-white relative -top-16 z-10 rounded-3xl p-8 md:-top-25 lg:top-auto lg:w-102.75"
             >
-                <h2 class="h2 mb-3">{{ data?.title?.en }}</h2>
+                <h2 class="mb-3 h2">{{ data?.title?.[lang] }}</h2>
 
                 <div
-                    class="text-gray-medium mb-4"
-                    v-html="data?.description?.en"
+                    class="mb-4 text-gray-medium"
+                    v-html="data?.description?.[lang]"
                 ></div>
 
-                <div class="mb-6 flex space-x-7 font-medium text-nowrap">
+                <div class="flex mb-6 font-medium space-x-7 text-nowrap">
                     <div
                         class="flex space-x-2"
                         v-for="(item, key) in data?.items"
                         :key="key"
                     >
                         <span v-html="item.icon"> </span>
-                        <span>{{ item.title?.en }}</span>
+                        <span>{{ item.title[lang] }}</span>
                     </div>
                 </div>
 
                 <div class="inline-flex">
                     <a
                         href="sectionData.button_link"
-                        class="bg-charcoal rounded-xl px-6 py-3 text-sm text-white xl:text-base"
+                        class="px-6 py-3 text-sm text-white bg-charcoal rounded-xl xl:text-base"
                     >
                         <span class="inline-block font-semibold">
-                            {{ data?.button_text?.en }}
+                            {{ data?.button_text?.[lang] }}
                         </span>
-                        <span class="ml-4 inline-block align-middle">
+                        <span class="inline-block ml-4 align-middle">
                             <ArrowUpRightIcon />
                         </span>
                     </a>
                 </div>
 
-                <hr class="text-gray-light my-8 w-full md:w-1/2 lg:w-full" />
+                <hr class="w-full my-8 text-gray-light md:w-1/2 lg:w-full" />
 
                 <h3
-                    class="h3 mb-6 w-full md:w-2/5 lg:w-full xl:w-2/5 2xl:w-full"
+                    class="w-full mb-6 h3 md:w-2/5 lg:w-full xl:w-2/5 2xl:w-full"
                 >
-                    {{ data?.search_label?.en }}
+                    {{ data?.search_label?.[lang] }}
                 </h3>
 
                 <form id="search-form" action="" class="relative">
@@ -81,13 +81,13 @@ defineProps<Props>();
                     </span>
                     <input
                         type="text"
-                        class="placeholder-gray-medium focus-visible:outline-red-brand w-full rounded-xl bg-white py-3 pr-28 pl-10 text-sm transition-all duration-150 2xl:text-base"
-                        :placeholder="data?.search_placeholder?.en"
+                        class="w-full py-3 pl-10 text-sm transition-all duration-150 bg-white placeholder-gray-medium focus-visible:outline-red-brand rounded-xl pr-28 2xl:text-base"
+                        :placeholder="data?.search_placeholder?.[lang]"
                     />
                     <button
-                        class="bg-red-brand absolute top-1 right-1 flex items-center space-x-1 rounded-lg px-4 py-2 text-sm font-medium text-white xl:text-base"
+                        class="absolute flex items-center px-4 py-2 space-x-1 text-sm font-medium text-white rounded-lg bg-red-brand top-1 right-1 xl:text-base"
                     >
-                        <span>{{ data?.search_button_text?.en }}</span>
+                        <span>{{ data?.search_button_text?.[lang] }}</span>
                         <span>
                             <ArrowRightIcon />
                         </span>

@@ -4,7 +4,9 @@
         class="bg-charcoal flex cursor-pointer items-center justify-center rounded-xl px-6 py-3.75 text-sm font-semibold text-white lg:inline 2xl:py-4 2xl:text-base"
     >
         <ImageIcon class="inline mr-1" />
-        <span class="align-middle">See all images ({{ images.length }})</span>
+        <span class="align-middle">
+            {{ $t('See all images') }} ({{ images.length }})
+        </span>
     </a>
     <div class="hidden">
         <template v-for="(image, key) in images" :key>

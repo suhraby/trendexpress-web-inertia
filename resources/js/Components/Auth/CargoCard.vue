@@ -10,36 +10,42 @@
                 cargo.received_address ? 'xl:grid-cols-4' : 'xl:grid-cols-3',
             ]"
         >
-            <div class="rounded-xl bg-white p-3 text-base">
-                <span class="text-gray-medium mb-2 block">Weight:</span>
+            <div class="p-3 text-base bg-white rounded-xl">
+                <span class="block mb-2 text-gray-medium">
+                    {{ $t('Weight') }}:
+                </span>
                 <span class="font-medium">{{ cargo.weight }}</span>
             </div>
-            <div class="rounded-xl bg-white p-3 text-base">
-                <span class="text-gray-medium mb-2 block">Created date:</span>
+            <div class="p-3 text-base bg-white rounded-xl">
+                <span class="block mb-2 text-gray-medium">
+                    {{ $t('Created date') }}:
+                </span>
                 <span class="font-medium">{{ cargo.created_at }}</span>
             </div>
 
             <div
                 v-if="cargo.received_address"
-                class="rounded-xl bg-white p-3 text-base"
+                class="p-3 text-base bg-white rounded-xl"
             >
-                <span class="text-gray-medium mb-2 block"
-                    >Received address:</span
-                >
+                <span class="block mb-2 text-gray-medium">
+                    {{ $t('Received address') }}:
+                </span>
                 <span class="font-medium">{{ cargo.received_address }}</span>
             </div>
 
-            <div class="rounded-xl bg-white p-3 text-base">
-                <span class="text-gray-medium mb-2 block">Current status:</span>
+            <div class="p-3 text-base bg-white rounded-xl">
+                <span class="block mb-2 text-gray-medium">
+                    {{ $t('Current status') }}:
+                </span>
                 <span
-                    class="font-sm bg-mint-green text-forest-green inline space-x-1 rounded-lg px-2 py-1 align-middle font-medium text-nowrap"
+                    class="inline px-2 py-1 space-x-1 font-medium align-middle rounded-lg font-sm bg-mint-green text-forest-green text-nowrap"
                 >
                     <CheckIcon class="inline align-text-bottom" />
                     <!-- <span
                         v-html="cargo.current_status_icon"
                         class="inline align-text-bottom"
                     ></span> -->
-                    <span>{{ cargo.current_status.en }}</span>
+                    <span>{{ cargo.current_status[lang] }}</span>
                 </span>
             </div>
         </div>
@@ -66,7 +72,7 @@
                                     cargo.current_status_id,
                                 ) === 'completed'
                             "
-                            class="bg-red-brand flex h-10 w-10 items-center justify-center rounded-full"
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-red-brand"
                         ></div>
 
                         <div
@@ -76,16 +82,16 @@
                                     cargo.current_status_id,
                                 ) === 'current'
                             "
-                            class="border-red-brand flex h-10 w-10 items-center justify-center rounded-full border-2 bg-white"
+                            class="flex items-center justify-center w-10 h-10 bg-white border-2 rounded-full border-red-brand"
                         >
                             <div
-                                class="bg-red-brand h-7 w-7 rounded-full"
+                                class="rounded-full bg-red-brand h-7 w-7"
                             ></div>
                         </div>
 
                         <div
                             v-else
-                            class="bg-gray-light h-10 w-10 rounded-full"
+                            class="w-10 h-10 rounded-full bg-gray-light"
                         ></div>
 
                         <span
@@ -96,7 +102,7 @@
                                 )
                             "
                         >
-                            {{ status.name.en }}
+                            {{ status.name[lang] }}
                         </span>
                     </div>
 
@@ -131,9 +137,12 @@
 
 <script lang="ts" setup>
 import CheckIcon from '@/Components/Icons/CheckIcon.vue';
+import { useLocale } from '@/composables/useLocale';
 import { CargoData, StatusData } from '@/types/data';
 import { computed } from 'vue';
 import FancyCargoImage from './FancyCargoImage.vue';
+
+const { lang } = useLocale();
 
 defineProps<{
     cargo: CargoData;

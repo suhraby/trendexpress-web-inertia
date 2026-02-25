@@ -1,7 +1,6 @@
 <template>
-    <!-- <FilterForm :statuses @filter-change="handleFilterChange" /> -->
     <div class="mb-5 border-b border-gray-light">
-        <h5 class="mb-4 h5">Filter by status</h5>
+        <h5 class="mb-4 h5">{{ $t('Filter by status') }}</h5>
 
         <div class="mb-6 space-y-3 text-sm font-medium text-charcoal">
             <div class="flex items-center space-x-2">
@@ -15,7 +14,7 @@
                         :model-value="isAllSelected"
                         @update:model-value="handleAllStatuses"
                     />
-                    <span class="ms-2">All</span>
+                    <span class="ms-2">{{ $t('All') }}</span>
                 </label>
             </div>
 
@@ -25,20 +24,6 @@
                         :for="`status-${status.id}`"
                         class="bg-off-white relative flex w-full cursor-pointer flex-row items-center space-x-1 rounded-[10px] py-2.5 pr-2.5 pl-10 leading-none"
                     >
-                        <!-- :model-value="
-                                            isStatusSelected(status.id)
-                                        "
-                                        @update:model-value="
-                                            (
-                                                checked:
-                                                    | boolean
-                                                    | 'indeterminate',
-                                            ) =>
-                                                handleStatusChange(
-                                                    status.id,
-                                                    checked,
-                                                )
-                                        " -->
                         <Checkbox
                             :id="`status-${status.id}`"
                             class="absolute -translate-y-1/2 top-1/2 left-3"
@@ -50,14 +35,14 @@
                         />
                         <span v-html="status.icon"></span>
 
-                        <span>{{ status.name.en }}</span>
+                        <span>{{ status.name[lang] }}</span>
                     </label>
                 </div>
             </div>
         </div>
     </div>
     <div class="mb-6 border-b border-gray-light">
-        <h5 class="mb-4 h5">By created date</h5>
+        <h5 class="mb-4 h5">{{ $t('By created date') }}</h5>
         <div class="mb-6 space-y-3 text-sm font-medium">
             <RadioGroup
                 :default-value="sortOrder"
@@ -74,7 +59,7 @@
                             value="desc"
                             class="absolute -translate-y-1/2 top-1/2 left-3"
                         />
-                        <span>Newest cargo first</span>
+                        <span>{{ $t('Newest cargo first') }}</span>
                     </Label>
                 </div>
                 <div class="flex items-center space-x-2">
@@ -87,7 +72,7 @@
                             value="asc"
                             class="absolute -translate-y-1/2 top-1/2 left-3"
                         />
-                        <span>Oldest cargo first</span>
+                        <span>{{ $t('Oldest cargo first') }}</span>
                     </Label>
                 </div>
             </RadioGroup>
@@ -98,7 +83,7 @@
         <input
             type="text"
             class="bg-off-white text-gray-medium w-full rounded-xl py-3.5 pr-12 pl-3 font-medium"
-            placeholder="Enter barcode"
+            :placeholder="$t('Enter barcode')"
             v-model="searchQuery"
             @keydown.enter="handleSearchSubmit"
         />
@@ -117,6 +102,7 @@ import ChevronRightIcon from '@/Components/Icons/ChevronRightIcon.vue';
 import Checkbox from '@/Components/ui/checkbox/Checkbox.vue';
 import { Label } from '@/Components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/Components/ui/radio-group';
+import { useLocale } from '@/composables/useLocale';
 import { StatusData } from '@/types/data';
 import { computed, nextTick, ref, watch } from 'vue';
 
@@ -125,6 +111,8 @@ const isAllSelected = ref<boolean>(true);
 const sortOrder = ref<'asc' | 'desc'>('desc');
 const searchQuery = ref<string>('');
 let searchTimeout: ReturnType<typeof setTimeout> | null = null;
+
+const { lang } = useLocale();
 
 const props = defineProps<{
     statuses: StatusData[];
@@ -142,8 +130,6 @@ const emit = defineEmits<{
 
 // status methods start
 const allStatusIds = computed(() => props.statuses.map((status) => status.id));
-
-// console.log(allStatusIds.value);
 
 const handleStatusChange = (
     statusId: number,

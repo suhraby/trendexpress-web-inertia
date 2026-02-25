@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-// import { useLanguage } from '@/composables/useLanguage'
-// import type { ContactInfoData, MessageCredentials, SectionData } from '@/types/data'
-import SectionTitle from '@/components/Landing/SectionTitle.vue';
+import SectionTitle from '@/Components/Landing/SectionTitle.vue';
+import { useLocale } from '@/composables/useLocale';
 import type { ContactInfoData, SectionData } from '@/types/data';
-// import { useMessage } from '@/composables/useMessage'
 // import { toast } from 'vue-sonner'
 
-// const { t, tApi } = useLanguage()
+const { lang } = useLocale();
 
 interface Props {
     data: SectionData;
@@ -14,63 +12,16 @@ interface Props {
 }
 
 defineProps<Props>();
-
-// const { resCode, loading, error, postMessage } = useMessage()
-
-// const form = ref<MessageCredentials>({
-//   name: '',
-//   surname: '',
-//   email: '',
-//   phone_number: '',
-//   body: '',
-// })
-
-// const isFormValid = computed(
-//   () =>
-//     form.value.name.trim() !== '' &&
-//     form.value.surname.trim() !== '' &&
-//     form.value.email.trim() !== '' &&
-//     form.value.phone_number.trim() !== '' &&
-//     form.value.body.trim() !== '',
-// )
-
-// const handleSubmit = async (): Promise<void> => {
-//   if (!isFormValid.value) return
-
-//   try {
-//     await postMessage(form.value)
-
-//     form.value = {
-//       name: '',
-//       surname: '',
-//       email: '',
-//       phone_number: '',
-//       body: '',
-//     }
-
-//     if (resCode.value === 201) {
-//       toast(t('common.message_send_successfully'), {
-//         description: t('common.thanks_message'),
-//         action: {
-//           label: 'OK',
-//           onClick: () => console.log('Message toasted'),
-//         },
-//       })
-//     }
-//   } catch (err) {
-//     console.error('Failed to send message :', err)
-//   }
-// }
 </script>
 
 <template>
-    <div id="contact" class="container-fluid py-10 md:py-20">
+    <div id="contact" class="py-10 container-fluid md:py-20">
         <div
             class="flex flex-col justify-between space-y-10 lg:flex-row lg:space-y-0"
         >
             <div class="relative w-full">
                 <SectionTitle
-                    :title="data.header?.en"
+                    :title="data.header?.[lang]"
                     span-class="text-red-brand"
                     class="mb-6"
                 />
@@ -84,7 +35,7 @@ defineProps<Props>();
                             v-if="contact.type === 'address'"
                         >
                             <span v-html="contact.icon"></span>
-                            <span>{{ contact.value_localization.en }}</span>
+                            <span>{{ contact.value_localization[lang] }}</span>
                         </div>
 
                         <div
@@ -138,20 +89,20 @@ defineProps<Props>();
             <div class="w-full lg:w-163.75">
                 <h1
                     class="h1 mb-8 w-full md:w-127.5"
-                    v-html="data.description?.en"
+                    v-html="data.description?.[lang]"
                 ></h1>
 
                 <!-- <div v-if="error" class="error-message">{{ error }}</div> -->
 
                 <!-- @submit.prevent="handleSubmit" -->
                 <form>
-                    <div class="mb-4 grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-4 mb-4">
                         <div>
                             <!-- v-model="form.name" :disabled="loading" -->
                             <input
                                 type="text"
                                 name="name"
-                                class="bg-off-white text-gray-medium w-full rounded-xl p-3 font-medium"
+                                class="w-full p-3 font-medium bg-off-white text-gray-medium rounded-xl"
                                 placeholder="Name"
                                 required
                             />
@@ -161,7 +112,7 @@ defineProps<Props>();
                             <input
                                 type="text"
                                 name="surname"
-                                class="bg-off-white text-gray-medium w-full rounded-xl p-3 font-medium"
+                                class="w-full p-3 font-medium bg-off-white text-gray-medium rounded-xl"
                                 placeholder="Surname"
                                 required
                             />
@@ -171,7 +122,7 @@ defineProps<Props>();
                             <input
                                 type="email"
                                 name="email"
-                                class="bg-off-white text-gray-medium w-full rounded-xl p-3 font-medium"
+                                class="w-full p-3 font-medium bg-off-white text-gray-medium rounded-xl"
                                 placeholder="Email"
                                 required
                             />
@@ -181,7 +132,7 @@ defineProps<Props>();
                             <input
                                 type="tel"
                                 name="phone_number"
-                                class="bg-off-white text-gray-medium w-full rounded-xl p-3 font-medium"
+                                class="w-full p-3 font-medium bg-off-white text-gray-medium rounded-xl"
                                 placeholder="Phone number"
                                 required
                             />
@@ -199,12 +150,12 @@ defineProps<Props>();
                     <!-- :disabled="loading" -->
                     <button
                         type="submit"
-                        class="bg-red-brand cursor-pointer rounded-xl px-6 py-3 text-sm text-white xl:text-base"
+                        class="px-6 py-3 text-sm text-white cursor-pointer bg-red-brand rounded-xl xl:text-base"
                     >
                         <span class="inline-block font-semibold">
                             Send message
                         </span>
-                        <span class="ml-4 inline-block align-middle">
+                        <span class="inline-block ml-4 align-middle">
                             <svg
                                 width="16"
                                 height="16"

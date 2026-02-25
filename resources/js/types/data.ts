@@ -60,17 +60,19 @@ export interface ContactInfoData {
     type: string;
 }
 
-export interface LocalizedText {
-    en: string;
-    ru: string;
-    tm: string;
-}
-
 export interface ListItem {
     title: LocalizedText;
     description?: LocalizedText;
     icon?: string;
     image?: string;
+}
+
+export type LocaleKey = 'en' | 'ru' | 'tm';
+
+export interface LocalizedText {
+    en: string;
+    ru: string;
+    tm: string;
 }
 
 export interface PaginationLink {

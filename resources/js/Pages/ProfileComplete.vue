@@ -1,11 +1,15 @@
 <template>
     <AuthenticationLayout
-        title="Complete Profile"
-        header="Please complete you profile data and change the default password to enter the dashboard"
+        :title="$t('Complete Profile')"
+        :header="
+            $t(
+                'Please complete you profile data and change the default password to enter the dashboard',
+            )
+        "
     >
         <div class="pb-5 text-sm md:pb-7 lg:pb-10">
             <ProfileForm :user>
-                <ContactLink question="Do you have problem?" />
+                <ContactLink :question="$t('Do you have any issues?')" />
             </ProfileForm>
         </div>
     </AuthenticationLayout>

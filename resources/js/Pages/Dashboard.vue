@@ -1,5 +1,5 @@
 <template>
-    <Head title="Dashboard" />
+    <Head :title="$t('Dashboard')" />
 
     <div
         class="relative"
@@ -61,7 +61,9 @@
                 <div
                     class="items-center hidden space-x-5 font-medium text-charcoal right-nav md:flex"
                 >
-                    <div class="add-after">locale</div>
+                    <div class="add-after">
+                        <SwitchLocale />
+                    </div>
                     <div class="add-after">
                         <Link
                             class="flex flex-row items-center cursor-pointer"
@@ -70,7 +72,7 @@
                             as="button"
                         >
                             <LogoutIcon class="mr-1" />
-                            <span>Log Out</span>
+                            <span>{{ $t('Log Out') }}</span>
                         </Link>
                     </div>
                     <div
@@ -99,30 +101,12 @@
                     class="text-charcoal bg-off-white flex w-full flex-row justify-between rounded-[10px] px-3 py-3 font-medium lg:w-auto"
                     @click="togglePanel('profile')"
                 >
-                    <span>Profile</span>
+                    <span>{{ $t('Profile') }}</span>
                     <ChevronRightIcon class="text-gray-medium" />
                 </a>
-                <div class="text-lg font-semibold">Language</div>
-                <div class="space-y-2">
-                    <a
-                        href="#"
-                        class="bg-off-white text-red-brand block w-full rounded-[10px] px-3 py-3 font-medium lg:w-auto"
-                    >
-                        English
-                    </a>
-                    <a
-                        href="#"
-                        class="text-charcoal bg-off-white block w-full rounded-[10px] px-3 py-3 font-medium lg:w-auto"
-                    >
-                        Turkmen
-                    </a>
-                    <a
-                        href="#"
-                        class="text-charcoal bg-off-white block w-full rounded-[10px] px-3 py-3 font-medium lg:w-auto"
-                    >
-                        Russian
-                    </a>
-                </div>
+
+                <SwitchLocale :is-mobile="true" @switched="closeAllModal" />
+
                 <div class="my-5 border-b border-gray-light"></div>
                 <Link
                     class="text-charcoal bg-off-white flex w-full flex-row justify-between rounded-[10px] px-3 py-3 font-medium lg:w-auto"
@@ -130,7 +114,7 @@
                     method="post"
                     as="button"
                 >
-                    <span>Log Out</span>
+                    <span>{{ $t('Log Out') }}</span>
                     <LogoutIcon class="text-gray-medium" />
                 </Link>
             </div>
@@ -148,7 +132,7 @@
                 >
                     <div class="flex flex-row justify-between mb-5 md:hidden">
                         <div class="text-charcoal text-[1.75rem] font-bold">
-                            Filter
+                            {{ $t('Filter') }}
                         </div>
 
                         <button
@@ -181,7 +165,7 @@
                                     { 'mt-4 lg:mt-6': key !== 0 },
                                 ]"
                             >
-                                {{ cargo.current_status.en }}
+                                {{ cargo.current_status[lang] }}
                             </div>
 
                             <CargoCard :cargo :statuses :cargoIndex="key" />
@@ -238,6 +222,8 @@ import ChevronRightIcon from '@/Components/Icons/ChevronRightIcon.vue';
 import CloseIcon from '@/Components/Icons/CloseIcon.vue';
 import LogoutIcon from '@/Components/Icons/LogoutIcon.vue';
 import MenuIcon from '@/Components/Icons/MenuIcon.vue';
+import SwitchLocale from '@/Components/SwitchLocale.vue';
+import { useLocale } from '@/composables/useLocale';
 import {
     ApiResponse,
     CargoData,
@@ -247,6 +233,8 @@ import {
 } from '@/types/data';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
+
+const { lang } = useLocale();
 
 const props = defineProps<{
     statuses: StatusData[];
