@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'profile.complete' => \App\Http\Middleware\EnsureUserProfileIsComplete::class,
+            'telegram.admin' => \App\Http\Middleware\VerifyTelegramAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

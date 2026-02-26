@@ -1,0 +1,49 @@
+@baseUrl = https://trendexpress.biz/api/telegram
+@tg-key = {{$dotenv [%]TELEGRAM_ADMIN_TOKEN}}
+
+###
+# Set webhook
+GET {{baseUrl}}/set-webhook HTTP/1.1
+content-type: application/json
+Accept: application/json
+X-Telegram-Admin: {{tg-key}}
+
+
+###
+# Remove webhook
+GET  {{baseUrl}}/remove-webhook HTTP/1.1
+content-type: application/json
+Accept: application/json
+X-Telegram-Admin: {{tg-key}}
+
+
+###
+# Get webhook info
+GET  {{baseUrl}}/webhook-info HTTP/1.1
+content-type: application/json
+Accept: application/json
+X-Telegram-Admin: {{tg-key}}
+
+
+###
+# Set command
+GET  {{baseUrl}}/set-commands HTTP/1.1
+content-type: application/json
+Accept: application/json
+X-Telegram-Admin: {{tg-key}}
+
+
+###
+# Get command
+GET  {{baseUrl}}/get-commands HTTP/1.1
+content-type: application/json
+Accept: application/json
+X-Telegram-Admin: {{tg-key}}
+
+
+###
+# Delete command
+GET  {{baseUrl}}/delete-commands HTTP/1.1
+content-type: application/json
+Accept: application/json
+X-Telegram-Admin: {{tg-key}}
