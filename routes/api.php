@@ -3,6 +3,10 @@
 use App\Http\Controllers\TelegramBotController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('test', function () {
+    return response()->json(['message' => 'Success'], 200);
+});
+
 Route::prefix('telegram')->name('telegram.')->group(function () {
     Route::post('webhook', [TelegramBotController::class, 'webhook'])->name('webhook');
 

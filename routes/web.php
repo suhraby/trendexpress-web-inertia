@@ -34,4 +34,3 @@ Route::post('/locale', function (Request $request) {
 // });
 
 require __DIR__ . '/auth.php';
-require __DIR__ . '/api.php';
