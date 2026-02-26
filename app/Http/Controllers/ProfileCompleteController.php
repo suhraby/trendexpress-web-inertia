@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileRequest;
 
+use function Symfony\Component\Clock\now;
+
 class ProfileCompleteController extends Controller
 {
     public function edit(Request $request): Response
@@ -34,16 +36,18 @@ class ProfileCompleteController extends Controller
 
         $user->has_default_password = false;
         $user->plain_password = null;
+        // TODO: remove below line when use smtp mailing and remove below comments
+        $user->email_verified_at = now();
         $user->save();
 
-        if ($emailChanged || ! $user->hasVerifiedEmail()) {
-            $user->sendEmailVerificationNotification();
-        }
+        // if ($emailChanged || ! $user->hasVerifiedEmail()) {
+        //     $user->sendEmailVerificationNotification();
+        // }
 
-        if (! $user->hasVerifiedEmail()) {
-            return Redirect::route('verification.notice')
-                ->with('status', 'You should check your mailbox and verify your email address.');
-        }
+        // if (! $user->hasVerifiedEmail()) {
+        //     return Redirect::route('verification.notice')
+        //         ->with('status', 'You should check your mailbox and verify your email address.');
+        // }
 
         return Redirect::route('dashboard');
     }
