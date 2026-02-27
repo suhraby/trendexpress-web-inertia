@@ -360,6 +360,7 @@ class TelegramService
             return [
                 'success' => false,
                 'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ];
         }
     }
